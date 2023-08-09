@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2eaea;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            background-color: #f5d4f2;
+            padding: 20px;
+            border-radius: 40px;
+            width: 20%;
+        }
+
+        h1 {
+            color: #581d39;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #bd4b9b;
+            margin-top: 0;
+            text-align: center;
+
+        }
+
+        p {
+            color: #703d61;
+            margin: 10px 0;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        a {
+            color: #581d39;
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #d67bc2;
+            margin-top: 20px; 
+            margin-left: 200px;
+            padding: 15px;
+            display: flex;
+            align-items: flex-end;
+            border: 5px solid #e9b2e0;
+            border-radius: 80px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <h1>User Info</h1>
+        <div id="userInfo"></div>
+        <button><a href="login.html">Back</a>
+        </button> 
+    </div>
+
+    <script>
+        const urlParameters = new URLSearchParams(window.location.search);
+        const UserEmail = urlParameters.get("email");
+
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(response => response.json())
+            .then(users => {
+                const user = users.find(user => user.email === UserEmail);
+
+                if (user) {
+
+                    const userDetails = document.getElementById("userInfo");
+                    const userHTML = `
+                        <h2>${user.name}</h2>
+                        <p><strong>ID:</strong> ${user.id}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Username:</strong> ${user.username}</p>
+                        <p><strong>Address:</strong> ${user.address.street},${user.address.suite}, ${user.address.city}, ${user.address.zipcode}</p>
+                        <p><strong>Phone:</strong> ${user.phone}</p>
+                        <p><strong>Website:</strong> <a href="#">${user.website}</a></p>
+                        <p><strong>Company:</strong> ${user.company.name}</p>
+                    `;
+
+                    userDetails.innerHTML = userHTML;
+                } else {
+                    alert("User are not found !");
+                    return false;
+                }
+            })
+
+    </script>
+</body>
+</html>
